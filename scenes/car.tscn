@@ -1,0 +1,128 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://code/car.gd" type="Script" id=1]
+[ext_resource path="res://code/seat.gd" type="Script" id=2]
+[ext_resource path="res://code/passengers_seat.gd" type="Script" id=3]
+[ext_resource path="res://code/wheel.gd" type="Script" id=4]
+
+[sub_resource type="BoxShape" id=1]
+
+[sub_resource type="CubeMesh" id=2]
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0, 1, 0.772549, 1 )
+
+[sub_resource type="CubeMesh" id=5]
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0.0117647, 0, 1, 1 )
+
+[sub_resource type="ConvexPolygonShape" id=7]
+points = PoolVector3Array( -1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, 1, -1, -1, -1, -1, 1, -1, 1, -1 )
+
+[sub_resource type="ConvexPolygonShape" id=8]
+points = PoolVector3Array( -1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, 1, -1, -1, -1, -1, 1, -1, 1, -1 )
+
+[sub_resource type="CylinderMesh" id=4]
+
+[sub_resource type="ConvexPolygonShape" id=9]
+points = PoolVector3Array( 0.184038, -0.982441, -0.982441, 0.184038, 0.982441, 0.982441, 0.306731, 0.981785, 0.951032, -0.18408, 0.982434, -0.982434, -0.982432, -0.982623, 0.184098, 0.98243, -0.982666, 0.184106, 0.917016, 0.978348, -0.397238, -0.982432, 0.982623, 0.184098, -0.18408, -0.982434, 0.982434, -0.79176, -0.974761, -0.60913, -0.609138, 0.97476, 0.791754, 0.917016, 0.978348, 0.397238, 0.609111, -0.974785, 0.791775, -0.917023, 0.978309, -0.397223, 0.853885, -0.976024, -0.518202, 0.5183, 0.975911, -0.853827, -0.79176, -0.974761, 0.60913, -0.518332, -0.975889, -0.853807, -0.609138, 0.97476, -0.791754, -0.982432, -0.982623, -0.184098, 0.184038, -0.982441, 0.982441, 0.98243, 0.982666, -0.184106, 0.642894, 0.979738, 0.765301, -0.18408, 0.982434, 0.982434, 0.642894, -0.979738, -0.765301, 0.853885, -0.976024, 0.518202, -0.518332, -0.975889, 0.853807, -0.853813, 0.975892, 0.518323, 0.98243, -0.982666, -0.184106, 0.184038, 0.982441, -0.982441, -0.18408, -0.982434, -0.982434, 0.791813, 0.974646, -0.609058, 0.98243, 0.982666, 0.184106, -0.982432, 0.982623, -0.184098, 0.397198, -0.978324, -0.917035, -0.397393, 0.978225, 0.916943, -0.917023, -0.978309, 0.397223, -0.397393, 0.978225, -0.916943, -0.707103, 0.983887, -0.707097, 0.459081, -0.979594, 0.887733, 0.791813, 0.974646, 0.609058, -0.917023, -0.978309, -0.397223, -0.707103, -0.983887, -0.707097, -0.707103, -0.983887, 0.707097, -0.707103, 0.983887, 0.707097, 0.5183, 0.975911, 0.853827, -0.853813, 0.975892, -0.518323, 0.642894, 0.979738, -0.765301, 0.95108, -0.981878, 0.306596, 0.95108, -0.981878, -0.306596, 0.306731, 0.981785, -0.951032, -0.306598, -0.981834, 0.951079, -0.306598, -0.981834, -0.951079, -0.951084, 0.981837, 0.306584, 0.791813, -0.974646, 0.609058, 0.791813, -0.974646, -0.609058, 0.306731, -0.981785, 0.951032, 0.5183, -0.975911, -0.853827, -0.951084, -0.981837, -0.306584, 0.397198, 0.978324, 0.917035, 0.459081, 0.979594, -0.887733, -0.853813, -0.975892, -0.518323, -0.853813, -0.975892, 0.518323, -0.518332, 0.975889, -0.853807 )
+
+[node name="car" type="VehicleBody" groups=["car"]]
+mass = 8965.37
+script = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.215118, 0, 0, 0, 0.545093, 0, 0, 0 )
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="CollisionShape"]
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="drivers_seat" type="Area" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.662418, 1.89758, -0.254459 )
+script = ExtResource( 2 )
+
+[node name="drivers_door" type="MeshInstance" parent="drivers_seat"]
+transform = Transform( 0.25082, 0, 0, 0, 0.25082, 0, 0, 0, 0.25082, 0, 0, -0.0494866 )
+mesh = SubResource( 5 )
+skeleton = NodePath("../../passengers_seat")
+material/0 = SubResource( 6 )
+
+[node name="CollisionShape" type="CollisionShape" parent="drivers_seat"]
+transform = Transform( 0.25082, 0, 0, 0, 0.25082, 0, 0, 0, 0.25082, 0, 0, -0.0494866 )
+shape = SubResource( 7 )
+
+[node name="passengers_seat" type="Area" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.662418, 1.89758, 0.230514 )
+script = ExtResource( 3 )
+
+[node name="pass_door" type="MeshInstance" parent="passengers_seat"]
+transform = Transform( 0.25082, 0, 0, 0, 0.25082, 0, 0, 0, 0.25082, 0, 0, 0 )
+mesh = SubResource( 5 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="passengers_seat"]
+transform = Transform( 0.25082, 0, 0, 0, 0.25082, 0, 0, 0, 0.25082, 0, 0, 0 )
+shape = SubResource( 8 )
+
+[node name="passengers_seat2" type="Area" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.603265, 1.89758, 0.230514 )
+script = ExtResource( 3 )
+
+[node name="pass_door" type="MeshInstance" parent="passengers_seat2"]
+transform = Transform( 0.25082, 0, 0, 0, 0.25082, 0, 0, 0, 0.25082, 0, 0, 0 )
+mesh = SubResource( 5 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="passengers_seat2"]
+transform = Transform( 0.25082, 0, 0, 0, 0.25082, 0, 0, 0, 0.25082, 0, 0, 0 )
+shape = SubResource( 8 )
+
+[node name="left_wheel_back" type="VehicleWheel" parent="."]
+transform = Transform( -2.60748e-08, 0, 0.596521, 0, 0.596521, 0, -0.596521, 0, -2.60748e-08, -0.621711, 0, -0.644129 )
+use_as_traction = true
+
+[node name="MeshInstance" type="MeshInstance" parent="left_wheel_back"]
+transform = Transform( -3.2451e-09, -0.0742391, -1.83853e-08, 0.494846, -2.16304e-08, 0, 8.03647e-16, 1.83853e-08, 0.494846, 0, 0, 0 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="left_wheel_front" type="VehicleWheel" parent="."]
+transform = Transform( -2.60748e-08, 0, 0.596521, 0, 0.596521, 0, -0.596521, 0, -2.60748e-08, 0.676107, -0.00931031, -0.654248 )
+use_as_steering = true
+
+[node name="MeshInstance" type="MeshInstance" parent="left_wheel_front"]
+transform = Transform( -3.2451e-09, -0.0742391, -1.83853e-08, 0.494846, -2.16304e-08, 0, 8.03647e-16, 1.83853e-08, 0.494846, 0, 0, 0 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="Area" type="Area" parent="left_wheel_front"]
+script = ExtResource( 4 )
+
+[node name="CollisionShape" type="CollisionShape" parent="left_wheel_front/Area"]
+transform = Transform( -3.2451e-09, -0.0742391, -1.83853e-08, 0.494846, -2.16304e-08, 0, 8.03647e-16, 1.83853e-08, 0.494846, 0, 0, 0 )
+shape = SubResource( 9 )
+
+[node name="right_wheel_back" type="VehicleWheel" parent="."]
+transform = Transform( -2.60748e-08, 0, 0.596521, 0, 0.596521, 0, -0.596521, 0, -2.60748e-08, -0.621711, 0, 0.619016 )
+use_as_traction = true
+
+[node name="MeshInstance" type="MeshInstance" parent="right_wheel_back"]
+transform = Transform( -3.2451e-09, -0.0742391, -1.83853e-08, 0.494846, -2.16304e-08, 0, 8.03647e-16, 1.83853e-08, 0.494846, 0, 0, 0 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="right_wheel_front" type="VehicleWheel" parent="."]
+transform = Transform( -2.60748e-08, 0, 0.596521, 0, 0.596521, 0, -0.596521, 0, -2.60748e-08, 0.687426, 0, 0.619016 )
+use_as_steering = true
+
+[node name="MeshInstance" type="MeshInstance" parent="right_wheel_front"]
+transform = Transform( -3.2451e-09, -0.0742391, -1.83853e-08, 0.494846, -2.16304e-08, 0, 8.03647e-16, 1.83853e-08, 0.494846, 0, 0, 0 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[connection signal="drive" from="drivers_seat" to="." method="_on_drivers_seat_drive"]
+[connection signal="exit" from="drivers_seat" to="." method="_on_drivers_seat_exit"]
+[connection signal="destroyed" from="left_wheel_front/Area" to="." method="_on_Area_destroyed"]
