@@ -2,11 +2,11 @@ extends Spatial
 
 class_name guns
 
-onready var bullet = preload("res://scenes/bullet.tscn")
 onready var casing = preload("res://scenes/casing.tscn")
 onready var mag_holder_scene = preload("res://scenes/mag_holder.tscn")
-onready var gun_drop = preload("res://scenes/gun_drop.tscn")
 
+export onready var bullet = preload("res://scenes/bullet.tscn")
+export onready var gun_drop = preload("res://scenes/gun_drop.tscn")
 export onready var mag = preload("res://scenes/mag.tscn")
 
 export var recoil_var = .05
@@ -22,6 +22,7 @@ export var ads_position = Vector3()
 export var ads_acc: float = .3
 export var default_fov: float = 70
 export var ads_fov: float = 55
+export var weight = .5
 export var ray_path : NodePath
 export var muzzle_path : NodePath
 export var case_path : NodePath
@@ -29,7 +30,11 @@ export var timer_path : NodePath
 export var hand_path : NodePath
 export var mag_holder_path : NodePath
 export var gun_drop_path: NodePath
+export var sway_left : Vector3
+export var sway_right : Vector3
+export var sway_normal : Vector3
 
+var distance
 var fired = 0
 var can_fire = true
 var burst = 0
@@ -52,10 +57,20 @@ var bullets_on_mags = 0
 var dropped_mag_cap
 var mag_position = Vector3()
 var gun_position = Vector3()
+var muzzle_position = Vector3()
 var repeat = 0
 var allow_dropping = true
+var walling = false
+var mouse_mov
+var sway_threshold = 1
+var sway_lerp = 1
 
 signal pick_confirmed
+
+func _input(event):
+	if event is InputEventMouseMotion:
+		mouse_mov = -event.relative.x
+		
 
 func _ready():
 	ray = get_node(ray_path)
@@ -65,10 +80,23 @@ func _ready():
 	hand = get_node(hand_path)
 	mag_holder = get_node(mag_holder_path)
 	gun_drop_place = get_node(gun_drop_path)
+	if magazines.size() > 0:
+		$gun/assault_rifle/mag_1.show()
+	else: 
+		$gun/assault_rifle/mag_1.hide()
 
-func _process(_delta):
+func _process(delta):
+	if mouse_mov != null:
+		if mouse_mov> sway_threshold:
+			rotation = rotation.linear_interpolate(sway_left, sway_lerp*delta)
+		elif mouse_mov < -sway_threshold:
+			rotation = rotation.linear_interpolate(sway_right, sway_lerp * delta)
+		else:
+			rotation = rotation.linear_interpolate(sway_normal, sway_lerp * delta)
+	
 	mag_position = mag_holder.global_transform.origin
 	gun_position = hand.global_transform.origin
+	muzzle_position = muzzle.global_transform.origin
 	
 	#check if you can shoot
 	match firemode:
@@ -88,6 +116,12 @@ func _process(_delta):
 	if reloading == false:
 		reload()
 	
+	if walling == false:
+		wall_check()
+		
+	if walling == true:
+		remove_wall()
+		
 	remove()
 	ads_enable()
 	check()
@@ -149,8 +183,10 @@ func reload():
 		clicks+=1
 		clicktimer.start()
 		
+		
 	match reload_value:
 		2:
+			$gun/assault_rifle/mag_1.hide()
 			if ammo < 1 and magazines.size()>0: #reloading with 0 bullets
 				can_fire = false
 				reloading = true
@@ -180,10 +216,11 @@ func reload():
 				reloading = false
 				can_fire = true
 				reload_value = 0
-				
+				$gun/assault_rifle/mag_1.show()
 		1:#dropping
 			mag_drop()
 				
+	
 #check magazines. if empty ammo = 0. Else ammo = magazine
 func magazine():
 	if magazines.empty() == true:
@@ -195,6 +232,7 @@ func magazine():
 
 func mag_drop():
 	if magazines.size()>0:
+		$gun/assault_rifle/mag_1.hide()
 		var previous_ammo
 		dropped_recently = true
 		reloading = true
@@ -221,8 +259,11 @@ func mag_drop():
 		reloading = false
 		can_fire = true
 		reload_value = 0
+		if magazines.size()>0:
+			$gun/assault_rifle/mag_1.show()
 
 func seperate_mag_drop():
+	$gun/assault_rifle/mag_1.hide()
 	var previous_ammo
 	reloading = true
 	can_fire = false
@@ -324,10 +365,8 @@ func _on_Timer_timeout():
 
 func _on_RayCast_pick():
 	if ray.getVar2() == size_of_gun:
-		magazines.insert(1,ray.getVar())
+		print(magazines.insert(1,ray.getVar()))
 		emit_signal("pick_confirmed")
-		
-	
 	else: 
 		print("not same")
 		
@@ -352,3 +391,19 @@ func drop():
 		get_tree().get_root().add_child(guns)
 		yield(get_tree().create_timer(reload_time), "timeout")
 		queue_free()
+
+func wall_check():
+	#if ray.is_colliding(): 
+		# Calculating the distance between the laser and a collision point.
+		distance = transform.origin.distance_to(ray.get_collision_point())
+		if distance<10:
+			walling=true
+			hand.rotate_x(rad2deg(0.1))
+#			if distance>10 and one_time==1:
+#				hand.rotate_x(rad2deg(-0.01))
+#				one_time=0
+func remove_wall():
+	distance = transform.origin.distance_to(ray.get_collision_point())
+	if distance>10:
+			walling=false
+			hand.rotate_x(rad2deg(-0.1))

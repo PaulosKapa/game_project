@@ -1,22 +1,62 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://code/Enemy.gd" type="Script" id=1]
+[ext_resource path="res://code/state_machine_enemy.gd" type="Script" id=1]
+[ext_resource path="res://code/Enemy.gd" type="Script" id=2]
+[ext_resource path="res://scenes/enemy_gun.tscn" type="PackedScene" id=3]
 
-[sub_resource type="CubeMesh" id=3]
+[sub_resource type="CapsuleMesh" id=5]
 
 [sub_resource type="SpatialMaterial" id=4]
 albedo_color = Color( 1, 0, 0, 1 )
 
-[sub_resource type="BoxShape" id=7]
+[sub_resource type="SphereShape" id=6]
+radius = 41.3185
 
-[node name="StaticBody2" type="StaticBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.68545, -95.8414 )
+[sub_resource type="CapsuleShape" id=8]
+
+[node name="KinematicBody" type="KinematicBody"]
+script = ExtResource( 2 )
+
+[node name="enemy" type="Spatial" parent="."]
 script = ExtResource( 1 )
+ray_path = NodePath("RayCast")
+eyes_path = NodePath("eyes")
+timer_path = NodePath("shoot")
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
-mesh = SubResource( 3 )
+[node name="MeshInstance" type="MeshInstance" parent="enemy"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+mesh = SubResource( 5 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 4 )
 
+[node name="RayCast" type="RayCast" parent="enemy"]
+enabled = true
+cast_to = Vector3( 0, 0, -50 )
+
+[node name="sight_range" type="Area" parent="enemy"]
+
+[node name="CollisionShape" type="CollisionShape" parent="enemy/sight_range"]
+shape = SubResource( 6 )
+
+[node name="shoot" type="Timer" parent="enemy"]
+
+[node name="eyes" type="Spatial" parent="enemy"]
+
+[node name="Spatial" parent="enemy/eyes" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.07115 )
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
 [node name="CollisionShape" type="CollisionShape" parent="."]
-shape = SubResource( 7 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+shape = SubResource( 8 )
+
+[connection signal="alert" from="enemy" to="." method="_on_enemy_alert"]
+[connection signal="hunt" from="enemy" to="." method="_on_enemy_hunt"]
+[connection signal="idle" from="enemy" to="." method="_on_enemy_idle"]
+[connection signal="out_of_ammo" from="enemy" to="." method="_on_enemy_out_of_ammo"]
+[connection signal="body_entered" from="enemy/sight_range" to="enemy" method="_on_sight_range_body_entered"]
+[connection signal="body_exited" from="enemy/sight_range" to="enemy" method="_on_sight_range_body_exited"]
+[connection signal="timeout" from="enemy/shoot" to="enemy" method="_on_shoot_timeout"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

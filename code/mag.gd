@@ -5,6 +5,8 @@ class_name magazine
 export var size_of_mag = 1
 export var capacity = 30
 
+
+
 func _ready():
 	set_as_toplevel(true)
 	

@@ -7,7 +7,6 @@ export var seat = 1 #1 for driver, 0 for passenger
 var seat_pos
 var driving = false
 var not_on_car = true
-var empty = true
 
 signal drive
 signal exit
@@ -33,10 +32,3 @@ func setVar_exit(value):
 
 func getVar_exit():
 	return not_on_car
-
-func setVar_empty(value):
-	empty = value
-
-func getVar_empty():
-	return empty
-	

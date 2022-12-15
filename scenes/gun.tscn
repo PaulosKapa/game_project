@@ -3,16 +3,13 @@
 [ext_resource path="res://scenes/sight.tscn" type="PackedScene" id=1]
 [ext_resource path="res://code/gun.gd" type="Script" id=2]
 [ext_resource path="res://code/gun_eyes.gd" type="Script" id=3]
-
-[sub_resource type="CubeMesh" id=1]
-
-[sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 0, 0, 0, 1 )
+[ext_resource path="res://models/guns/assault_rifles/a_1/assault_rifle.glb" type="PackedScene" id=4]
+[ext_resource path="res://models/magazines/mag_1/mag_1.gltf" type="PackedScene" id=5]
 
 [node name="hand" type="Spatial" groups=["gun"]]
 script = ExtResource( 2 )
-default_position = Vector3( 0.257, -0.217, -0.014 )
-ads_position = Vector3( 0, -0.121, -0.014 )
+default_position = Vector3( 0.428, -0.298, -0.694 )
+ads_position = Vector3( 0, -0.121, -0.694 )
 ray_path = NodePath("gun/RayCast")
 muzzle_path = NodePath("gun/muzzle")
 case_path = NodePath("gun/case_eject")
@@ -20,21 +17,22 @@ timer_path = NodePath("gun/Timer")
 hand_path = NodePath(".")
 mag_holder_path = NodePath("mag_holder")
 gun_drop_path = NodePath("gun/gun_drop")
+sway_left = Vector3( 0, 0.1, 0 )
+sway_right = Vector3( 0, -0.1, 0 )
 
 [node name="gun" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.534896 )
 
 [node name="muzzle" type="Spatial" parent="gun"]
-transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, -0.569237 )
+transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, -0.943723 )
 
 [node name="case_eject" type="Spatial" parent="gun"]
 transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0.137331, 0, 0 )
 
-[node name="MeshInstance" type="MeshInstance" parent="gun"]
-transform = Transform( 0.0855388, 0, 0, 0, 0.0841691, 0, 0, 0, 0.523595, 0, 0, 0 )
-layers = 2
-mesh = SubResource( 1 )
-material/0 = SubResource( 2 )
+[node name="assault_rifle" parent="gun" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-09, 0, -0.1, 0, 0.1, 0, 0.1, 0, -4.37114e-09, 0, 0, 0 )
+
+[node name="mag_1" parent="gun/assault_rifle" instance=ExtResource( 5 )]
 
 [node name="RayCast" type="RayCast" parent="gun"]
 transform = Transform( 1.00888, 0, 0, 0, 1.00888, 0, 0, 0, 1.00888, 0, 0, 0 )
@@ -59,3 +57,5 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.129463, -0.534896 )
 [connection signal="pick_confirmed" from="." to="gun/RayCast" method="_on_hand_pick_confirmed"]
 [connection signal="pick" from="gun/RayCast" to="." method="_on_RayCast_pick"]
 [connection signal="timeout" from="gun/Timer" to="." method="_on_Timer_timeout"]
+
+[editable path="gun/assault_rifle"]

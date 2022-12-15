@@ -1,23 +1,20 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://code/gun_drop.gd" type="Script" id=1]
+[ext_resource path="res://models/guns/assault_rifles/a_1/assault_rifle.glb" type="PackedScene" id=2]
 
 [sub_resource type="BoxShape" id=1]
-
-[sub_resource type="CubeMesh" id=2]
-
-[sub_resource type="SpatialMaterial" id=3]
-albedo_color = Color( 0, 0, 0, 1 )
+extents = Vector3( 0.967034, 0.350166, 0.0911319 )
 
 [node name="RigidBody" type="RigidBody"]
 mass = 10.0
 script = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1.11793, 0, 0, 0, 0.719748, 0, 0, 0, 0.709153, 0, 0, 0 )
+transform = Transform( 1.11793, 0, 0, 0, 0.719748, 0, 0, 0, 0.709153, 0.0884473, -0.177421, -0.0107703 )
 shape = SubResource( 1 )
 
-[node name="MeshInstance" type="MeshInstance" parent="CollisionShape"]
-mesh = SubResource( 2 )
-skeleton = NodePath("../../..")
-material/0 = SubResource( 3 )
+[node name="assault_rifle" parent="." instance=ExtResource( 2 )]
+transform = Transform( 0.111793, 0, 0, 0, 0.0719748, 0, 0, 0, 0.0709153, 0, 0, 0 )
+
+[editable path="assault_rifle"]

@@ -22,3 +22,4 @@ func getVar2():
 	
 func getVar3():
 	return pick_up
+

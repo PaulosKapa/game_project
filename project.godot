@@ -9,30 +9,75 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "RigidBody",
+"class": "Interactive",
+"language": "GDScript",
+"path": "res://code/interactive.gd"
+}, {
+"base": "Area",
+"class": "armor",
+"language": "GDScript",
+"path": "res://code/armor.gd"
+}, {
+"base": "Spatial",
+"class": "bag",
+"language": "GDScript",
+"path": "res://code/inventory.gd"
+}, {
+"base": "RigidBody",
+"class": "battery",
+"language": "GDScript",
+"path": "res://code/battery_drop.gd"
+}, {
+"base": "RigidBody",
+"class": "bullet",
+"language": "GDScript",
+"path": "res://code/bullet.gd"
+}, {
 "base": "VehicleBody",
 "class": "car",
 "language": "GDScript",
 "path": "res://code/car.gd"
 }, {
-"base": "StaticBody",
+"base": "KinematicBody",
 "class": "enemy",
 "language": "GDScript",
 "path": "res://code/Enemy.gd"
+}, {
+"base": "Spatial",
+"class": "enemy_gun",
+"language": "GDScript",
+"path": "res://code/enemy_gun.gd"
 }, {
 "base": "RigidBody",
 "class": "gun_drop",
 "language": "GDScript",
 "path": "res://code/gun_drop.gd"
 }, {
+"base": "RayCast",
+"class": "gun_ray",
+"language": "GDScript",
+"path": "res://code/gun_eyes.gd"
+}, {
 "base": "Spatial",
 "class": "guns",
 "language": "GDScript",
 "path": "res://code/gun.gd"
 }, {
+"base": "Spatial",
+"class": "laser_gun",
+"language": "GDScript",
+"path": "res://code/laser_gun.gd"
+}, {
 "base": "RigidBody",
 "class": "magazine",
 "language": "GDScript",
 "path": "res://code/mag.gd"
+}, {
+"base": "KinematicBody",
+"class": "player",
+"language": "GDScript",
+"path": "res://code/Player.gd"
 }, {
 "base": "Area",
 "class": "seats",
@@ -45,11 +90,20 @@ _global_script_classes=[ {
 "path": "res://code/wheel.gd"
 } ]
 _global_script_class_icons={
+"Interactive": "",
+"armor": "",
+"bag": "",
+"battery": "",
+"bullet": "",
 "car": "",
 "enemy": "",
+"enemy_gun": "",
 "gun_drop": "",
+"gun_ray": "",
 "guns": "",
+"laser_gun": "",
 "magazine": "",
+"player": "",
 "seats": "",
 "wheel": ""
 }
@@ -167,9 +221,15 @@ handbrake={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
+change_seat={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777238,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [physics]
 
+common/physics_fps=240
 common/enable_pause_aware_picking=true
 3d/physics_engine="Bullet"
 

@@ -48,19 +48,16 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.20433, 0 )
 transform = Transform( 1.41681, 0, 3.20486, 0, 3.50406, 0, -3.20486, 0, 1.41681, -9.12172, 3.50406, 0 )
 mesh = SubResource( 1 )
 skeleton = NodePath("../../..")
-material/0 = null
 
 [node name="Cube002" type="MeshInstance" parent="map/StaticBody"]
 transform = Transform( 3.3369, 0, 1.06936, 0, 3.50406, 0, -1.06936, 0, 3.3369, -0.00312805, 3.50406, -8.23724 )
 mesh = SubResource( 1 )
 skeleton = NodePath("../../..")
-material/0 = null
 
 [node name="Cube001" type="MeshInstance" parent="map/StaticBody"]
 transform = Transform( 19.4396, 0, 0, 0, 0.401638, 0, 0, 0, 19.4396, 0, -0.394661, 0 )
 mesh = SubResource( 2 )
 skeleton = NodePath("../../..")
-material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="map/StaticBody"]
 transform = Transform( 19.4396, 0, 0, 0, 0.401638, 0, 0, 0, 19.4396, 0, -0.394661, 0 )

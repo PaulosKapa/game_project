@@ -13,23 +13,22 @@ var seat_pos
 var seat
 var exit
 var gun_seat
-var empty_seat = true
 
 signal pick
 signal enter
 
 func _process(delta):
-
 	if is_colliding(): 
 		var collider = get_collider()
 		if collider is gun_drop:
 			collider()
+			print(collider)
 			if Input.is_action_just_pressed("use"):
 				emit_signal("pick")
 				
 		elif collider is seats:
 			collider()
-			if Input.is_action_just_pressed("use") and empty_seat == true:
+			if Input.is_action_just_pressed("use"):
 				emit_signal("enter")
 
 		elif current_collider:
@@ -57,6 +56,9 @@ func getVar5():
 func _on_Player_gun_pick_confirmed():
 	current_collider.queue_free()
 
+func get_cost():
+	return(inst.cost)
+
 #car
 func setVar6(value):
 	inst.setVar_insideCar(value)
@@ -76,20 +78,11 @@ func get_seat():
 	else:
 		driver = inst.setVar_driving(false)
 		return driver
+	print(driver)
 
 func get_seat_guns():
 	gun_seat = inst.getVar_seat()
 	return gun_seat
-
-func get_change_seat():
-	if inst.getVar_empty() == true:
-		inst.setVar_empty(false)
-		empty_seat = inst.getVar_empty()
-	else:
-		inst.setVar_empty(true)
-		empty_seat = inst.getVar_empty()
-	return(empty_seat)
-
 
 func get_exit():
 	if inst.getVar_exit() == true:

@@ -41,7 +41,7 @@ mesh = SubResource( 2 )
 material/0 = SubResource( 3 )
 
 [node name="drivers_seat" type="Area" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.662418, 1.89758, -0.254459 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.23263, 1.89758, -0.254459 )
 script = ExtResource( 2 )
 
 [node name="drivers_door" type="MeshInstance" parent="drivers_seat"]
